@@ -1,44 +1,93 @@
 # Digital Guest Experience Platform - AI/ML Microservice
 
-An end-to-end AI/ML and FastAPI microservice powering intelligent guest experience workflows across booking retention, personalized upsells, and guest service resolution benchmarking.
+This project brings together the AI/ML work for the Digital Guest Experience platform. It currently covers booking abandonment risk and personalized upsell recommendations, with the service-resolution research documented separately.
 
-## Project Architecture & Repository Structure
+## Project structure
 
-- **app/main.py**: FastAPI application & inference endpoints (Member 4)
-- **artifacts/abandonment_model.joblib**: Task 1 trained RandomForest booking risk pipeline
-- **artifacts/guestly_recommendation_engine.py**: Task 2 content-based cosine similarity upsell engine
-- **data/**: Cleaned and raw hospitality datasets and evaluation outputs
-- **notebooks/01_booking_risk.ipynb**: Task 1 booking abandonment risk modeling & evaluation
-- **notebooks/03_resolution_time_prediction.ipynb**: Task 3 guest service resolution time benchmarking
-- **notebooks/guestly_upsell_engine.ipynb** (+ cont1, cont2, summary): Task 2 upsell modeling notebooks
-- **tests/test_api.py**: Automated FastAPI endpoint verification suite
+- `app/main.py`: FastAPI application and prediction endpoints.
+- `artifacts/abandonment_model.joblib`: trained booking-risk pipeline.
+- `artifacts/guestly_recommendation_engine.py`: personalized upsell recommendation logic.
+- `data/`: project datasets and evaluation outputs.
+- `notebooks/`: model development and evaluation notebooks.
+- `tests/test_api.py`: API checks maintained as part of the project QA work.
 
-## AI/ML Components & Deliverables
+## What the API provides
 
-1. **Task 1 - Booking Abandonment & Cancellation Risk** (
-otebooks/01_booking_risk.ipynb & rtifacts/abandonment_model.joblib)
-   - **Model:** scikit-learn Pipeline (OneHotEncoder + StandardScaler + RandomForestClassifier).
-   - **Performance:** 0.7824 validation accuracy and 0.8446 ROC-AUC on hotel_bookings_cleaned.csv.
-   - **Endpoint:** POST /predict-booking-risk - accepts Booking_Channel, Guest_Segment, Room_Type, Stay_Length_Days, Nightly_Rate_NGN, and Lead_Time_Days; returns abandonment_risk (0.0-1.0) and recommended_action.
+The API makes the available booking-risk model and upsell recommendation engine accessible to the backend through JSON requests and responses.
 
-2. **Task 2 - Personalized Upsell Recommendation Engine** (rtifacts/guestly_recommendation_engine.py)
-   - **Model:** Content-based cosine similarity recommendation engine scoring guest stay profiles against hospitality add-on packages with human-readable explanations.
-   - **Endpoint:** POST /recommend-upsells - accepts Guest_Segment, Room_Type, Stay_Length_Days, and Country; returns the top 2 personalized extra services (recommended_services).
+### Health check
 
-3. **Task 3 - Guest Service Resolution Time Prediction** (
-otebooks/03_resolution_time_prediction.ipynb)
-   - **Research Finding:** Benchmarking demonstrated that stratified baseline averages outperform complex tree and linear regressors on noisy service ticket logs. Documented as an exploratory notebook with aggregate evaluation metrics (no .joblib artifact or live prediction endpoint required).
+`GET /health`
 
-4. **Task 4 - FastAPI Backend Integration** (pp/main.py - Member 4)
-   - Implements GET /health, POST /predict-booking-risk, and POST /recommend-upsells using the artifacts in artifacts/.
+Returns the service status and whether the booking-risk model and upsell engine are available.
 
-5. **Task 5 - QA & Repository Verification** (	ests/test_api.py - Member 5)
-   - Verifies repository structure, artifact integrity, server startup, and end-to-end API responses via pytest -v.
+### Booking risk
 
-## Local Setup & Running Tests
+`POST /predict-booking-risk`
 
-1. Clone repo: git clone https://github.com/chinwenduanoziea-art/Digital-Guest-Experience-AI-ML.git
-2. Activate venv: python -m venv .venv && .\.venv\Scripts\Activate.ps1
-3. Install dependencies: pip install -r requirements.txt
-4. Start API server: uvicorn app.main:app --reload --port 8000
-5. Run automated tests: python -m pytest -v
+Send the booking details below:
+
+```json
+{
+  "Booking_Channel": "Website",
+  "Guest_Segment": "Solo",
+  "Room_Type": "Standard",
+  "Stay_Length_Days": 3,
+  "Nightly_Rate_NGN": 45000,
+  "Lead_Time_Days": 30
+}
+```
+
+The response includes the predicted abandonment risk, a risk level, and a suggested follow-up action.
+
+### Personalized upsells
+
+`POST /recommend-upsells`
+
+Send the guest details below:
+
+```json
+{
+  "Guest_Segment": "Couple",
+  "Room_Type": "Suite",
+  "Stay_Length_Days": 4,
+  "Country": "UK"
+}
+```
+
+The response returns up to two recommended services with their similarity scores and explanations. The request also accepts optional boolean fields: `Airport_Arrival`, `Spa_Interest`, and `Breakfast_Need`.
+
+The current recommendation engine uses the guest segment, length of stay, room type, and optional interest signals to build its recommendation profile. `Country` is accepted in the request for backend compatibility, but it is not currently used in the recommendation score.
+
+## A note on the available models
+
+The booking-risk endpoint loads the trained pipeline from `artifacts/abandonment_model.joblib`. The upsell endpoint calls the existing recommendation engine in `artifacts/guestly_recommendation_engine.py`.
+
+Task 3 is currently documented as an exploratory service-resolution-time experiment. Its notebook does not produce a deployable model artifact, so there is no concierge or resolution-time prediction endpoint in this API at this stage.
+
+## Run locally
+
+Create and activate a virtual environment, then install the project dependencies:
+
+```bash
+python -m venv .venv
+```
+
+On Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Install dependencies and start the API:
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+Once it is running, the interactive API documentation is available at:
+
+`http://127.0.0.1:8000/docs`
+
+The existing automated checks can be run with `python -m pytest -v`. API QA and final backend handoff remain with the project QA lead.
