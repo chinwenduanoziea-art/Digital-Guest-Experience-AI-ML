@@ -42,3 +42,15 @@ otebooks/03_resolution_time_prediction.ipynb)
 3. Install dependencies: pip install -r requirements.txt
 4. Start API server: uvicorn app.main:app --reload --port 8000
 5. Run automated tests: python -m pytest -v
+
+
+Summary of My Task 4 – FastAPI Microservice
+I implemented the FastAPI microservice to make the existing booking-risk model and personalized upsell engine accessible through JSON endpoints.
+I added three endpoints:
+1. GET /health – checks service and model availability.
+2. POST /predict-booking-risk – predicts booking abandonment risk and suggests an action.
+3. POST /recommend-upsells – returns personalized service recommendations with explanations and similarity scores.
+I also added input validation, error handling and a dedicated GitHub Actions workflow with API tests.
+The GitHub Actions workflow ran successfully, and all Task 4 checks passed.
+The implementation is ready for QA and backend integration.
+Soft Nation Dev
