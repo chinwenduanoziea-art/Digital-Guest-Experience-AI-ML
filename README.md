@@ -10,7 +10,7 @@ AI/ML components for a Digital Guest Experience Platform.
 ## Where Each Member Puts Their Files
 - **Member 1:** Save `01_booking_risk.ipynb` in `notebooks/` and `abandonment_model.joblib` in `artifacts/`
 - **Member 2:** Save `02_upsell_engine.ipynb` in `notebooks/` and `upsell_model.joblib` in `artifacts/`
-- **Member 3:** Save `03_concierge_router.ipynb` in `notebooks/` and `concierge_model.joblib` in `artifacts/`
+- **Member 3 (revised Task 3):** Prepare `03_resolution_time_prediction.ipynb` in `notebooks/` for exploratory regression of service resolution time. Document aggregate evaluation results. No trained `.joblib` artifact or prediction endpoint is part of this deliverable until target validity and model performance are validated.
 - **Member 4:** Save `main.py` in `app/`
 - **Member 5:** Runs `pytest -v` and verifies `uvicorn app.main:app --reload`
 
