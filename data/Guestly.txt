@@ -1,0 +1,47 @@
+# Guestly – Personalized Upsell Engine
+
+## Overview
+The Personalized Upsell Engine recommends relevant hotel add-on services based on guest profile characteristics.
+
+## Available Services
+- Breakfast Package
+- Airport Pickup
+- Spa Package
+- Late Checkout
+- Room Upgrade
+- Laundry Service
+- Family Package
+
+## Technology Used
+- Python
+- Pandas
+- Scikit-learn
+- Cosine Similarity
+- Jupyter Notebook
+
+## Recommendation Method
+The engine uses manually defined guest and service features to calculate cosine similarity scores. Services are ranked according to their similarity to the guest profile.
+
+## Input Features
+- Family
+- Long stay
+- Business
+- Airport arrival
+- Spa interest
+- Breakfast need
+- Standard room
+
+Each feature is represented by 0 or 1.
+
+## Output
+The engine returns:
+- Service name
+- Similarity score
+- Recommendation reason
+- Execution status
+
+## Backend Integration
+Import `guestly_api_recommendation` from `guestly_recommendation_engine.py` and provide a pandas DataFrame containing one guest profile.
+
+## Limitations
+This is a prototype based on manually defined service features. Similarity scores are not purchase probabilities. Actual purchase history, hotel service availability, pricing, and guest feedback have not yet been incorporated.
