@@ -15,24 +15,22 @@ An end-to-end AI/ML and FastAPI microservice powering intelligent guest experien
 
 ## AI/ML Components & Deliverables
 
-1. **Task 1 - Booking Abandonment & Cancellation Risk** (
-otebooks/01_booking_risk.ipynb & rtifacts/abandonment_model.joblib)
+1. **Task 1 - Booking Abandonment & Cancellation Risk** (otebooks/01_booking_risk.ipynb & \rtifacts/abandonment_model.joblib)
    - **Model:** scikit-learn Pipeline (OneHotEncoder + StandardScaler + RandomForestClassifier).
    - **Performance:** 0.7824 validation accuracy and 0.8446 ROC-AUC on hotel_bookings_cleaned.csv.
    - **Endpoint:** POST /predict-booking-risk - accepts Booking_Channel, Guest_Segment, Room_Type, Stay_Length_Days, Nightly_Rate_NGN, and Lead_Time_Days; returns abandonment_risk (0.0-1.0) and recommended_action.
 
-2. **Task 2 - Personalized Upsell Recommendation Engine** (rtifacts/guestly_recommendation_engine.py)
+2. **Task 2 - Personalized Upsell Recommendation Engine** (\rtifacts/guestly_recommendation_engine.py)
    - **Model:** Content-based cosine similarity recommendation engine scoring guest stay profiles against hospitality add-on packages with human-readable explanations.
    - **Endpoint:** POST /recommend-upsells - accepts Guest_Segment, Room_Type, Stay_Length_Days, and Country; returns the top 2 personalized extra services (recommended_services).
 
-3. **Task 3 - Guest Service Resolution Time Prediction** (
-otebooks/03_resolution_time_prediction.ipynb)
+3. **Task 3 - Guest Service Resolution Time Prediction** (otebooks/03_resolution_time_prediction.ipynb)
    - **Research Finding:** Benchmarking demonstrated that stratified baseline averages outperform complex tree and linear regressors on noisy service ticket logs. Documented as an exploratory notebook with aggregate evaluation metrics (no .joblib artifact or live prediction endpoint required).
 
-4. **Task 4 - FastAPI Backend Integration** (pp/main.py - Member 4)
+4. **Task 4 - FastAPI Backend Integration** (\pp/main.py - Member 4)
    - Implements GET /health, POST /predict-booking-risk, and POST /recommend-upsells using the artifacts in artifacts/.
 
-5. **Task 5 - QA & Repository Verification** (	ests/test_api.py - Member 5)
+5. **Task 5 - QA & Repository Verification** (\	ests/test_api.py - Member 5)
    - Verifies repository structure, artifact integrity, server startup, and end-to-end API responses via pytest -v.
 
 ## Local Setup & Running Tests
